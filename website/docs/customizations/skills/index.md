@@ -39,6 +39,34 @@ Skills are defined in `.github/skills/<skill-name>/SKILL.md`:
 | [dotnet-test](/customizations/skills/dotnet-test) | Selective .NET test execution |
 | [dotnet-dependency](/customizations/skills/dotnet-dependency) | Investigate and manage NuGet dependencies |
 
+## Installing Skills
+
+Skills can be installed to `~/.copilot/skills/` for use across all projects.
+
+### Using the Install Script
+
+```bash
+# List available skills
+./scripts/install-skills.sh --list
+
+# Install all skills
+./scripts/install-skills.sh --all
+
+# Install specific skills
+./scripts/install-skills.sh dotnet-test dotnet-dependency
+```
+
+**PowerShell (Windows):**
+```powershell
+.\scripts\install-skills.ps1 -List
+.\scripts\install-skills.ps1 -All
+.\scripts\install-skills.ps1 dotnet-test, dotnet-dependency
+```
+
+### Manual Installation
+
+Copy skill folders to `~/.copilot/skills/`.
+
 ## Skill Frontmatter
 
 ```yaml
