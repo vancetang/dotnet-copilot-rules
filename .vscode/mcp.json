@@ -1,17 +1,5 @@
 {
-  "inputs": [
-    {
-      "id": "memory_file_path",
-      "type": "promptString",
-      "description": "Path to the memory storage file (optional)",
-      "password": false
-    }
-  ],
   "servers": {
-    "github": {
-      "type": "http",
-      "url": "https://api.githubcopilot.com/mcp/"
-    },
     "context7": {
       "type": "stdio",
       "command": "npx",
@@ -23,22 +11,6 @@
     "microsoft.docs.mcp": {
       "type": "http",
       "url": "https://learn.microsoft.com/api/mcp"
-    },
-    "playwright": {
-      "command": "npx",
-      "args": [
-        "@playwright/mcp@latest"
-      ]
-    },
-    "memory": {
-      "command": "npx",
-      "args": [
-        "-y",
-        "@modelcontextprotocol/server-memory"
-      ],
-      "env": {
-        "MEMORY_FILE_PATH": "${input:memory_file_path}"
-      }
     }
   }
 }
