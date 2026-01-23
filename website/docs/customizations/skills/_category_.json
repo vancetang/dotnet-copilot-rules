@@ -1,0 +1,8 @@
+{
+  "label": "Skills",
+  "position": 5,
+  "link": {
+    "type": "generated-index",
+    "description": "Reusable skills for GitHub Copilot Chat."
+  }
+}

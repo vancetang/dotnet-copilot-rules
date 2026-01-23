@@ -22,17 +22,7 @@ A guide to effective development patterns and techniques using GitHub Copilot.
 
 💡 Use `git worktree` for parallel development
 
-### 1.2. Test-Driven Development
-
-- Write tests first, commit
-- Implement code iteratively
-- Refactor and commit improvements
-
-**When to use:** AI-assisted development thrives when you have robust and comprehensive test suites.
-
-💡 Make sure generated tests are meaningful and not just boilerplate. Keep the code quality as high as that of your production code.
-
-### 1.3. Spec-Driven Development
+### 1.2. Spec-Driven Development
 
 - Create a Product Requirements Document (PRD) based on user input
 - Generate tasks from the PRD
@@ -44,7 +34,7 @@ Consider using [spec-kit](https://github.com/github/spec-kit) for structured spe
 
 💡 This methodology works best with clear requirements. Be prepared to iterate and refine - feel free to discard approaches that don't work well.
 
-### 1.4. Brainstorming & Ideation
+### 1.3. Brainstorming & Ideation
 
 - Ask Copilot to brainstorm multiple approaches and iterate on ideas
 - Use generated ideas as grounding context for subsequent prompts
@@ -77,10 +67,14 @@ GitHub Copilot uses instruction files for project-wide context:
 - **Content:** Architecture decisions, design patterns, coding standards
 - **Best practice:** Keep it concise but comprehensive and high-level
 
-**IDE-level:** `.vscode/instructions/*.instructions.md`
+**IDE-level:** `.github/instructions/*.instructions.md`
 - **Purpose:** Development environment specific guidance
 - **Content:** Testing conventions, coding style, editor-specific workflows
 - **Examples:** [coding-guidelines](/customizations/instructions/coding-guidelines), [testing-xunit](/customizations/instructions/testing-xunit)
+
+**Agent coordination:** `AGENTS.md`
+- **Purpose:** Multi-agent orchestration guidelines
+- **Content:** Agent responsibilities, coordination patterns, task delegation
 
 ### 2.3. Session Management
 
@@ -101,7 +95,8 @@ Instructions provide persistent context that shapes Copilot's behavior.
 | Location | Scope | Purpose |
 |----------|-------|---------|
 | `.github/copilot-instructions.md` | Repository | Team-shared project standards |
-| `.vscode/instructions/*.instructions.md` | IDE | Development environment guidance |
+| `.github/instructions/*.instructions.md` | IDE | Development environment guidance |
+| `AGENTS.md` | Repository | Multi-agent coordination |
 
 **Examples in this repo:**
 - [coding-guidelines](/customizations/instructions/coding-guidelines)
@@ -114,11 +109,10 @@ Prompts are reusable templates for common tasks.
 | Location | Scope |
 |----------|-------|
 | `.github/prompts/*.prompt.md` | Repository-wide prompts |
-| `.vscode/prompts/*.prompt.md` | IDE-specific prompts |
 
 **Examples in this repo:**
 - [code-review](/customizations/prompts/code-review) - Code review workflow
-- [new-idea](/customizations/prompts/new-idea) - Idea exploration
+- [spec](/customizations/prompts/spec) - Specification interview
 - [pros-and-cons](/customizations/prompts/pros-and-cons) - Decision analysis
 
 ### 3.3. Agents
@@ -130,16 +124,24 @@ Agents extend Copilot with specialized capabilities for complex multi-step tasks
 **Examples in this repo:**
 - [debug](/customizations/agents/debug) - Debugging assistance
 - [research](/customizations/agents/research) - Research and exploration
+- [differ](/customizations/agents/differ) - Git branch diff analysis
 
 ### 3.4. Skills
 
-VS Code provides built-in skills that Copilot can use:
-- **Editor actions:** Navigate, select, edit code
-- **Workspace operations:** File management, search
-- **Terminal operations:** Run commands, view output
-- **Web search:** Find documentation and examples online
+Skills are reusable, composable capabilities with specialized knowledge.
 
-Skills are automatically available and don't require configuration.
+**Location:** `.github/skills/<skill-name>/SKILL.md`
+
+**Examples in this repo:**
+- [research](/customizations/skills/research) - Comprehensive research with source analysis
+- [dotnet-run-file](/customizations/skills/dotnet-run-file) - Run C# scripts without projects
+- [dotnet-test](/customizations/skills/dotnet-test) - Selective .NET test execution
+- [dotnet-dependency](/customizations/skills/dotnet-dependency) - NuGet dependency management
+
+Skills can define:
+- Specialized knowledge and workflows
+- Tool permissions via `allowed-tools`
+- Reference files for progressive disclosure
 
 ## 4. Tips for Success
 

@@ -1,0 +1,52 @@
+---
+title: "Dotnet Dependency"
+sidebar_position: 5
+---
+
+import DotnetDependencySource from '!!raw-loader!../../../../.github/skills/dotnet-dependency/SKILL.md'
+import CodeBlock from '@theme/CodeBlock';
+
+# Dotnet Dependency Skill
+
+Investigate and manage .NET project dependencies using built-in dotnet CLI commands.
+
+## When to Use
+
+- Search for NuGet packages or find latest versions
+- Add, update, or remove package references
+- Understand why a specific package is included
+- Find outdated or vulnerable packages
+- Trace transitive dependencies
+
+## Quick Reference
+
+| Command | Purpose |
+|---------|---------|
+| `dotnet package search <term>` | Search NuGet for packages |
+| `dotnet add package <id>` | Add/update package |
+| `dotnet nuget why <package>` | Show dependency graph |
+| `dotnet list package` | List NuGet packages |
+| `dotnet list package --outdated` | Find outdated packages |
+| `dotnet list package --vulnerable` | Find security issues |
+
+## Common Operations
+
+```bash
+# Search for packages
+dotnet package search Serilog --take 5
+
+# Add package (latest version)
+dotnet add package Serilog
+
+# Why is this package included?
+dotnet nuget why Newtonsoft.Json
+
+# Check for outdated packages
+dotnet list package --outdated
+```
+
+## Skill Source
+
+<CodeBlock language="markdown">
+{DotnetDependencySource}
+</CodeBlock>

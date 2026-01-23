@@ -1,0 +1,42 @@
+---
+title: "Differ Agent"
+sidebar_position: 3
+---
+
+import DifferAgentSource from '!!raw-loader!../../../../.github/agents/differ.agent.md'
+import CodeBlock from '@theme/CodeBlock';
+
+# Differ Agent
+
+Analyzes differences between git branches and provides clear, concise summaries of code changes.
+
+## Overview
+
+The Differ Agent:
+
+1. **Determines Target Branch**: Defaults to 'develop', configurable
+2. **Executes Git Diff Analysis**: Runs `--stat` and `--name-status` commands
+3. **Generates Summary**: High-level overview with file statistics
+4. **Error Handling**: Clear messages for missing branches or no changes
+
+## Output Format
+
+```
+=== Branch Comparison ===
+Current: [branch-name]
+Target: [target-branch]
+
+Statistics: [X files changed, Y insertions(+), Z deletions(-)]
+
+=== Changed Files ===
+[Tree-style list with status indicators (A/M/D) and line counts]
+
+=== Summary ===
+[2-4 sentences describing high-level purpose and impact]
+```
+
+## Agent Source
+
+<CodeBlock language="markdown">
+{DifferAgentSource}
+</CodeBlock>

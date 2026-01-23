@@ -1,0 +1,53 @@
+---
+title: "Dotnet Test"
+sidebar_position: 4
+---
+
+import DotnetTestSource from '!!raw-loader!../../../../.github/skills/dotnet-test/SKILL.md'
+import CodeBlock from '@theme/CodeBlock';
+
+# Dotnet Test Skill
+
+Run .NET tests selectively with a build-first, test-targeted workflow optimized for xUnit.
+
+## When to Use
+
+- Run targeted tests during development
+- Filter tests by method, class, or parameter values
+- Debug failing or hanging tests
+- Understand test output and filtering options
+
+## Core Workflow
+
+```bash
+# 1. Build solution first
+dotnet build -p:WarningLevel=0 /clp:ErrorsOnly --verbosity minimal
+
+# 2. Run specific project tests
+dotnet test path/to/project --no-build --verbosity minimal
+
+# 3. Filter specific tests
+dotnet test --no-build --filter "FullyQualifiedName~MyTestClass"
+```
+
+## Common Filter Patterns
+
+```bash
+# By method name
+dotnet test --no-build --filter "FullyQualifiedName~Create"
+
+# By class
+dotnet test --no-build --filter "FullyQualifiedName~UserServiceTests"
+
+# Theory tests with specific parameter
+dotnet test --no-build --filter "DisplayName~admin_user"
+
+# Exclude slow tests
+dotnet test --no-build --filter "Category!=Slow"
+```
+
+## Skill Source
+
+<CodeBlock language="markdown">
+{DotnetTestSource}
+</CodeBlock>

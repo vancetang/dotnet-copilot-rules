@@ -19,8 +19,9 @@ This handbook provides best practices, customization guides, and tips for using 
 ## Customizations
 
 - **[Instructions](/category/instructions)** - C# coding style, guidelines, testing, and git commit messages
-- **[Prompts](/category/prompts)** - Reusable prompts for code review, idea proposals, analysis
-- **[Agents](/category/agents)** - Debug and research agents for VS Code
+- **[Prompts](/category/prompts)** - Reusable prompts for code review, specifications, analysis
+- **[Agents](/category/agents)** - Debug, research, and differ agents for VS Code
+- **[Skills](/category/skills)** - Reusable skills for research, .NET testing, and dependency management
 
 ## Resources
 
