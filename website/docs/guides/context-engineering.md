@@ -7,7 +7,7 @@ title: Context Engineering
 
 Context engineering is the practice of structuring information to maximize AI effectiveness. These principles help you get better results from AI coding assistants.
 
-## The 6 Core Principles
+## The 5 Core Principles
 
 ### 1. Filesystem as External Memory
 
