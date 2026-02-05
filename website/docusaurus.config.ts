@@ -73,7 +73,7 @@ const config: Config = {
       },
       items: [
         {
-          to: '/getting-started',
+          to: '/',
           label: 'Getting Started',
           position: 'left',
         },

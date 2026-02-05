@@ -1,0 +1,42 @@
+---
+title: "Session Reflection"
+sidebar_position: 4
+---
+
+import ReflectSource from '!!raw-loader!../../../../.github/prompts/reflect.prompt.md'
+import CodeBlock from '@theme/CodeBlock';
+
+# Session Reflection Prompt
+
+A prompt for creating reflective analysis of AI coding sessions, focusing on techniques, patterns, and lessons learned.
+
+## Overview
+
+Use this prompt to capture meta-analysis of your AI coding sessions:
+
+- **What went well** - Effective techniques and approaches
+- **What went wrong** - Issues and delays
+- **Lessons learned** - Actionable insights for future sessions
+- **Tips & tricks** - Useful patterns discovered
+
+## Usage
+
+```
+/reflect api-migration
+```
+
+Or auto-derive name from session context:
+
+```
+/reflect
+```
+
+Output is saved to `.copilot/reflections/<date>-<name>.md`.
+
+See the [Session Reflection Guide](../../guides/session-reflection) for detailed usage.
+
+## Prompt Source
+
+<CodeBlock language="markdown">
+{ReflectSource}
+</CodeBlock>

@@ -1,0 +1,50 @@
+---
+title: "Commit"
+sidebar_position: 5
+---
+
+import CommitSource from '!!raw-loader!../../../../.github/prompts/commit.prompt.md'
+import CodeBlock from '@theme/CodeBlock';
+
+# Commit Prompt
+
+A prompt for creating well-formatted git commits with conventional commit messages and emojis.
+
+## Overview
+
+Use this prompt to:
+
+- Create atomic, focused commits
+- Follow conventional commit format
+- Include descriptive emojis by commit type
+- Generate meaningful commit messages
+
+## Usage
+
+```
+/commit
+```
+
+Or skip pre-commit checks:
+
+```
+/commit --no-verify
+```
+
+## Commit Types
+
+| Emoji | Type     | Use For            |
+| ----- | -------- | ------------------ |
+| ✨     | feat     | New features       |
+| 🐛     | fix      | Bug fixes          |
+| 📝     | docs     | Documentation      |
+| ♻️     | refactor | Code restructuring |
+| ⚡️     | perf     | Performance        |
+| ✅     | test     | Tests              |
+| 🧑‍💻     | chore    | Maintenance        |
+
+## Prompt Source
+
+<CodeBlock language="markdown">
+{CommitSource}
+</CodeBlock>

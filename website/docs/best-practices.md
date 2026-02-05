@@ -72,9 +72,9 @@ GitHub Copilot uses instruction files for project-wide context:
 - **Content:** Testing conventions, coding style, editor-specific workflows
 - **Examples:** [coding-guidelines](/customizations/instructions/coding-guidelines), [testing-xunit](/customizations/instructions/testing-xunit)
 
-**Agent coordination:** `AGENTS.md`
-- **Purpose:** Multi-agent orchestration guidelines
-- **Content:** Agent responsibilities, coordination patterns, task delegation
+**Agent memory:** `AGENTS.md`
+- **Purpose:** Instructions file to fine-tune agent behavior
+- **Content:** Project-specific rules, constraints, and context for AI agents
 
 ### 2.3. Session Management
 
@@ -92,11 +92,11 @@ GitHub Copilot can be customized through several mechanisms:
 
 Instructions provide persistent context that shapes Copilot's behavior.
 
-| Location | Scope | Purpose |
-|----------|-------|---------|
-| `.github/copilot-instructions.md` | Repository | Team-shared project standards |
-| `.github/instructions/*.instructions.md` | IDE | Development environment guidance |
-| `AGENTS.md` | Repository | Multi-agent coordination |
+| Location | Purpose |
+|----------|---------|
+| `.github/copilot-instructions.md` | Team-shared project standards |
+| `.github/instructions/*.instructions.md` | Development environment guidance |
+| `AGENTS.md` | Agent memory and behavior tuning |
 
 **Examples in this repo:**
 - [coding-guidelines](/customizations/instructions/coding-guidelines)

@@ -6,24 +6,47 @@ title: GitHub Copilot Handbook
 
 # GitHub Copilot Handbook
 
-Welcome to the GitHub Copilot Handbook - your guide to customizing and getting the most out of GitHub Copilot.
+Your guide to customizing and getting the most out of GitHub Copilot.
 
-## What is this?
+## Guides
 
-This handbook provides best practices, customization guides, and tips for using GitHub Copilot effectively in your development workflow.
+- [Context Engineering](./guides/context-engineering) - Manus principles for managing AI context
+- [AI Coding Best Practices](./guides/ai-coding-best-practices) - Think first, prompt techniques, context management
+- [Reasoning Strategies](./guides/reasoning-strategies) - CoT, ToT, AoT, Reflexion patterns
+- [Session Reflection](./guides/session-reflection) - Meta-analysis of AI sessions
 
-## Getting Started
+## Instructions
 
-- **[Getting Started](/getting-started)** - Learn the basics of GitHub Copilot customization
+- [Coding Guidelines](./customizations/instructions/coding-guidelines) - C# patterns, code organization
+- [Coding Style](./customizations/instructions/coding-style) - Code formatting and conventions
+- [Testing (xUnit)](./customizations/instructions/testing-xunit) - xUnit test patterns, fixtures
+- [Git Messages](./customizations/instructions/git-message) - Commit message generation
+- [Code Review](./customizations/instructions/code-review) - Code review framework
 
-## Customizations
+## Prompts
 
-- **[Instructions](/category/instructions)** - C# coding style, guidelines, testing, and git commit messages
-- **[Prompts](/category/prompts)** - Reusable prompts for code review, specifications, analysis
-- **[Agents](/category/agents)** - Debug, research, and differ agents for VS Code
-- **[Skills](/category/skills)** - Reusable skills for research, .NET testing, and dependency management
+- [Commit](./customizations/prompts/commit) - Create conventional commits with emojis
+- [Code Review](./customizations/prompts/code-review) - Comprehensive code review workflow
+- [Spec Interview](./customizations/prompts/spec) - Specification interview
+- [Pros and Cons](./customizations/prompts/pros-and-cons) - Decision analysis framework
+- [Session Reflection](./customizations/prompts/reflect) - Capture session learnings
+
+## Agents
+
+- [Debug](./customizations/agents/debug) - Systematic debugging workflow
+- [Research](./customizations/agents/research) - Comprehensive research with analysis
+- [Differ](./customizations/agents/differ) - Git branch diff analysis
+
+## Skills
+
+- [Research](./customizations/skills/research) - Web research with source analysis
+- [.NET Run File](./customizations/skills/dotnet-run-file) - Execute C# scripts without projects
+- [.NET Test](./customizations/skills/dotnet-test) - Selective .NET test execution
+- [.NET Dependency](./customizations/skills/dotnet-dependency) - NuGet dependency management
+- [Planning with Files](./customizations/skills/planning-with-files) - Persistent file-based task tracking
 
 ## Resources
 
+- [Best Practices](./best-practices) - Development patterns and techniques
 - [GitHub Copilot Documentation](https://docs.github.com/en/copilot)
 - [GitHub Repository](https://github.com/nikiforovall/github-copilot-rules)
