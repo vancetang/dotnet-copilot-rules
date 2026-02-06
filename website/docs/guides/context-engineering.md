@@ -5,7 +5,7 @@ title: Context Engineering
 
 # Context Engineering for AI-Assisted Development
 
-Context engineering is the practice of structuring information to maximize AI effectiveness. These principles help you get better results from AI coding assistants.
+Context engineering is the practice of structuring information to maximize AI effectiveness. Without it, [context rot](#context-rot) degrades model performance unpredictably as input grows. These principles help you get better results from AI coding assistants.
 
 ## The 5 Core Principles
 
@@ -103,6 +103,69 @@ Fresh context with critical information preserved works better than struggling t
 - Building on previous work coherently
 - Context is still relevant and focused
 - Quality remains good
+
+---
+
+## Context Rot
+
+Context rot is the non-uniform performance degradation that occurs as input context expands. Unlike a gradual decline, models exhibit **sharp, unpredictable drops** at certain thresholds — a model might maintain 95% accuracy, then suddenly plummet to 60%.
+
+Research across [18 leading LLMs](https://research.trychroma.com/context-rot) (GPT-4.1, Claude 4, Gemini 2.5, Qwen 3) confirms all models are affected.
+
+### How It Manifests
+
+- **Lost in the Middle** — models excel at beginning/end positions, neglect middle. Accuracy drops 15-20 points purely from information position
+- **Attention Degradation** — adding more tokens to "improve" context actually worsens performance. Chain-of-thought can even degrade in long-context tasks
+- **Cascading Effect** — stale context compounds through each stage of the development pipeline:
+
+```mermaid
+---
+config:
+  sankey:
+    showValues: false
+    width: 800
+    height: 400
+    linkColor: gradient
+---
+sankey-beta
+
+Good Context,Spec,100
+Stale Context,Spec,50
+Bloated Context,Spec,30
+Noisy Context,Spec,20
+
+Spec,Good Plan,80
+Spec,Bad Plan,120
+
+Good Plan,Good Tasks,60
+Good Plan,Bad Tasks,40
+Bad Plan,Bad Tasks,100
+Compounding Errors,Bad Tasks,60
+
+Good Tasks,Good Code,75
+Good Tasks,Bad Code,15
+Bad Tasks,Bad Code,200
+Technical Debt,Bad Code,80
+```
+
+### Types of Context Rot
+
+| Type | Description | Example |
+|------|-------------|---------|
+| **Temporal** | Time-sensitive info becomes stale | Outdated API docs, changed requirements |
+| **Structural** | Relationships between entities shift | Refactored code, moved files |
+| **Semantic** | Meaning changes even if data doesn't | Renamed concepts, evolved terminology |
+
+### Prevention
+
+:::tip
+- **Prune aggressively** — remove resolved errors, completed phases, irrelevant history
+- **Summarize, don't accumulate** — compress long conversations into concise summaries
+- **Position critical info at boundaries** — place key information at the beginning or end of context
+- **Use filesystem as memory** — offload to files instead of stuffing the context window (see [Principle 1](#1-filesystem-as-external-memory))
+- **Re-read plans regularly** — counteract attention fade (see [Principle 2](#2-attention-manipulation-through-repetition))
+- **Fresh conversation reset** — when degradation sets in, start clean with only essential context
+:::
 
 ---
 
