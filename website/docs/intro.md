@@ -22,6 +22,8 @@ Official VS Code documentation for GitHub Copilot features and customization.
 | [Smart Actions](https://code.visualstudio.com/docs/copilot/copilot-smart-actions) | 15 integrated actions: commits, PRs, merge conflicts, docs, tests, rename |
 | [Context Engineering Guide](https://code.visualstudio.com/docs/copilot/guides/context-engineering-guide) | Curate context → create plans → generate code; project docs as AI memory |
 | [Prompt Engineering Guide](https://code.visualstudio.com/docs/copilot/guides/prompt-engineering-guide) | Practical tips for effective prompts in inline suggestions and chat |
+| [Prompt Engineering for Copilot Chat](https://docs.github.com/en/copilot/concepts/prompting/prompt-engineering) | GitHub official guide: effective prompts, examples, breaking down tasks, avoiding ambiguity |
+| [Copilot CLI Best Practices](https://docs.github.com/en/copilot/how-tos/copilot-cli/cli-best-practices) | Strategies for Copilot CLI: customization, planning, delegation, team workflows |
 | [Custom Instructions](https://code.visualstudio.com/docs/copilot/customization/custom-instructions) | `AGENTS.md`, `copilot-instructions.md`, `/init` for workspace-tailored guidelines |
 | [Customization Overview](https://code.visualstudio.com/docs/copilot/customization/overview) | Layers: instructions → skills → prompts → agents → MCP → model selection |
 | [Prompt Files](https://code.visualstudio.com/docs/copilot/customization/prompt-files) | `.prompt.md` templates with YAML frontmatter, dynamic variables, tool integration |
@@ -74,17 +76,18 @@ The single most important skill for effective AI-assisted development. Poor cont
 7. **[AI Coding Best Practices](./guides/ai-coding-best-practices)** — Plan architecture upfront, tell AI what NOT to do, use different modes strategically.
 8. **[Custom Instructions](https://code.visualstudio.com/docs/copilot/customization/custom-instructions)** — Set up `AGENTS.md` and `copilot-instructions.md`; use `/init` to bootstrap workspace guidelines.
 9. **[Prompt Engineering Guide](https://code.visualstudio.com/docs/copilot/guides/prompt-engineering-guide)** — Practical tips for writing effective prompts for inline suggestions and chat.
-10. **[Reasoning Strategies](./guides/reasoning-strategies)** — Eight named patterns (CoT, ToT, AoT, Reflexion...) and when to use each.
+10. **[Prompt Engineering for Copilot Chat](https://docs.github.com/en/copilot/concepts/prompting/prompt-engineering)** — GitHub official guide: effective prompts, examples, breaking down complex tasks.
+11. **[Reasoning Strategies](./guides/reasoning-strategies)** — Eight named patterns (CoT, ToT, AoT, Reflexion...) and when to use each.
 
 ### Phase 3: Define Your Standards
 
 Before automating anything, define what "good" looks like for your team.
 
-11. **[Coding Guidelines](./customizations/instructions/coding-guidelines)** — C# patterns, code organization conventions.
-12. **[Coding Style](./customizations/instructions/coding-style)** — Formatting and naming conventions.
-13. **[Testing (xUnit)](./customizations/instructions/testing-xunit)** — Test patterns, fixtures, assertions.
-14. **[Git Messages](./customizations/instructions/git-message)** — Commit message format and conventions.
-15. **[Code Review](./customizations/agents/code-review)** — Code review agent with prioritized feedback.
+12. **[Coding Guidelines](./customizations/instructions/coding-guidelines)** — C# patterns, code organization conventions.
+13. **[Coding Style](./customizations/instructions/coding-style)** — Formatting and naming conventions.
+14. **[Testing (xUnit)](./customizations/instructions/testing-xunit)** — Test patterns, fixtures, assertions.
+15. **[Git Messages](./customizations/instructions/git-message)** — Commit message format and conventions.
+16. **[Code Review](./customizations/agents/code-review)** — Code review agent with prioritized feedback.
 
 ### Phase 4: Automate with Customizations
 
@@ -122,18 +125,18 @@ graph LR
     A --> M
 ```
 
-16. **[Customization Overview](https://code.visualstudio.com/docs/copilot/customization/overview)** — Understand the layering: instructions → skills → prompts → agents → MCP.
-17. **[Prompt Files](https://code.visualstudio.com/docs/copilot/customization/prompt-files)** — Learn `.prompt.md` format, then study handbook prompts:
+17. **[Customization Overview](https://code.visualstudio.com/docs/copilot/customization/overview)** — Understand the layering: instructions → skills → prompts → agents → MCP.
+18. **[Prompt Files](https://code.visualstudio.com/docs/copilot/customization/prompt-files)** — Learn `.prompt.md` format, then study handbook prompts:
     - [Commit](./customizations/prompts/commit) — Conventional commits with emoji categorization
     - [Pros and Cons](./customizations/prompts/pros-and-cons) — Decision analysis framework
     - [Session Reflection](./customizations/prompts/reflect) — Capture session learnings
-18. **[Custom Agents](https://code.visualstudio.com/docs/copilot/customization/custom-agents)** — Learn `.agent.md` format, then study handbook agents:
+19. **[Custom Agents](https://code.visualstudio.com/docs/copilot/customization/custom-agents)** — Learn `.agent.md` format, then study handbook agents:
     - [Debug](./customizations/agents/debug) — 4-phase systematic debugging
     - [Research](./customizations/agents/research) — Recursive exploration with source analysis
     - [Differ](./customizations/agents/differ) — Git branch diff summaries
     - [Spec Interview](./customizations/agents/spec) — Structured requirement gathering with plan handoff
     - [Code Review](./customizations/agents/code-review) — Prioritized review (Critical → Low)
-19. **[Agent Skills](https://code.visualstudio.com/docs/copilot/customization/agent-skills)** — Learn `SKILL.md` format, then study handbook skills:
+20. **[Agent Skills](https://code.visualstudio.com/docs/copilot/customization/agent-skills)** — Learn `SKILL.md` format, then study handbook skills:
     - [.NET Run File](./customizations/skills/dotnet-run-file) — Execute C# scripts directly
     - [.NET Test](./customizations/skills/dotnet-test) — Selective test execution
     - [.NET Dependency](./customizations/skills/dotnet-dependency) — NuGet dependency management
@@ -143,9 +146,10 @@ graph LR
 
 Delegate complex, multi-step work to autonomous agents.
 
-20. **[Subagents](https://code.visualstudio.com/docs/copilot/agents/subagents)** — Isolated context for parallel delegation.
-21. **[Agents Tutorial](https://code.visualstudio.com/docs/copilot/agents/agents-tutorial)** — Build Local → Background → Cloud agent workflows.
-22. **[Background Agents](https://code.visualstudio.com/docs/copilot/agents/background-agents)** — Autonomous execution in worktrees.
+21. **[Subagents](https://code.visualstudio.com/docs/copilot/agents/subagents)** — Isolated context for parallel delegation.
+22. **[Agents Tutorial](https://code.visualstudio.com/docs/copilot/agents/agents-tutorial)** — Build Local → Background → Cloud agent workflows.
+23. **[Background Agents](https://code.visualstudio.com/docs/copilot/agents/background-agents)** — Autonomous execution in worktrees.
+24. **[Copilot CLI Best Practices](https://docs.github.com/en/copilot/how-tos/copilot-cli/cli-best-practices)** — Strategies for CLI agent workflows: customization, planning, delegation.
 
 ### Phase 6: Reflect & Iterate
 
@@ -164,5 +168,5 @@ graph LR
     I & P & K -.->|"improve next session"| S
 ```
 
-23. **[Session Reflection](./guides/session-reflection)** — Meta-analysis of how work was done, not what was built.
-24. Use `/reflect` after complex sessions → accumulate insights → extract patterns into new instructions, prompts, or skills.
+25. **[Session Reflection](./guides/session-reflection)** — Meta-analysis of how work was done, not what was built.
+26. Use `/reflect` after complex sessions → accumulate insights → extract patterns into new instructions, prompts, or skills.
