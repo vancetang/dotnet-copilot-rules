@@ -3,120 +3,61 @@ sidebar_position: 1
 title: Context Engineering
 ---
 
-# Context Engineering for AI-Assisted Development
+# Context engineering for AI-assisted development
 
-Context engineering is the practice of structuring information to maximize AI effectiveness. Without it, [context rot](#context-rot) degrades model performance unpredictably as input grows. These principles help you get better results from AI coding assistants.
+Context engineering is giving the AI the right information at the right time. That's it. Curate what the model sees, get better results.
 
-## The 5 Core Principles
+Why does this matter? Because AI coding assistants don't actually "know" your codebase. They only know what's in front of them right now. Feed them garbage context, get garbage output. Feed them focused, relevant context, and they'll surprise you.
 
-### 1. Filesystem as External Memory
-
-Context windows have limits. Treat the filesystem as unlimited memory:
-
-- **Store large content in files** - Don't paste entire codebases into chat
-- **Keep only references in context** - Use file paths, not full contents
-- **Agent can "look up" information** - Point to files when needed
-
-```
-_plans/
-  plan.md          # Current goals and status
-  research.md      # Findings and sources
-  decisions.md     # Architectural choices with rationale
-```
-
-### 2. Attention Manipulation Through Repetition
-
-After many interactions, AI may "forget" original goals ("lost in the middle" effect).
-
-**Solution:** Keep a plan file that gets RE-READ throughout execution:
-
-```
-Start of context: [Original goal - far away, attention fades]
-...many interactions...
-End of context: [Recently read plan.md - gets ATTENTION!]
-```
-
-By reading the plan before major decisions, goals appear in the attention window.
-
-### 3. Keep Failure Traces
-
-Error recovery is one of the clearest signals of true agentic behavior.
-
-**KEEP failed actions visible:**
-
-```markdown
-## Errors Encountered
-- FileNotFoundError: config.json not found → Created default config
-- API timeout → Retried with exponential backoff, succeeded
-```
-
-The model updates its internal understanding when seeing failures and their resolutions.
-
-### 4. Avoid Few-Shot Overfitting
-
-Uniformity breeds fragility. Repetitive patterns cause drift and hallucination.
-
-**Introduce controlled variation:**
-- Vary phrasings slightly
-- Don't copy-paste patterns blindly
-- Recalibrate on repetitive tasks
-
-### 5. Stable Prefixes for Cache Optimization
-
-AI assistants are input-heavy (100:1 input-to-output ratio). Structure for efficiency:
-
-- **Put static content FIRST** - Instructions, context that doesn't change
-- **Append-only context** - Never modify history mid-conversation
-- **Consistent formatting** - Same structure helps caching
+This guide covers what goes wrong (context rot), how to fight it, and practical patterns that work.
 
 ---
 
-## Context Window Management
+## Context rot: the inevitable problem
 
-### Quality Degrades Before Limits
+Here's the uncomfortable truth: your context will rot. Not if. When.
 
-:::warning
-Quality starts to degrade well before you hit context limits. Signs of degradation:
-- Responses become less coherent
-- Model forgets earlier context
-- Hallucinations increase
-:::
+Context rot is the performance degradation that happens as your conversation grows. It's not a gradual decline either. Models can maintain 95% accuracy, then suddenly plummet to 60% when you cross some invisible threshold. Sharp drops, not gentle slopes.
 
-### Fresh Conversation Reset
+[Research across 18 leading LLMs](https://research.trychroma.com/context-rot) (GPT-4.1, Claude 4, Gemini 2.5, Qwen 3) confirms every model is affected. This isn't a bug in one tool. It's how attention mechanisms work.
 
-When context gets bloated:
-1. Copy everything important
-2. Start a fresh conversation
-3. Paste back only what matters
+### Why it happens
 
-Fresh context with critical information preserved works better than struggling through degraded context.
+LLMs have a "lost in the middle" problem. They're great at remembering the beginning and end of conversations. The middle? Not so much. Accuracy drops 15-20 points purely based on where information appears in the context window.
 
-### When to Restart vs Continue
+And here's the annoying part: adding more context to "help" often makes things worse. More tokens means more places for attention to scatter. Chain-of-thought reasoning can actually degrade on long-context tasks.
 
-**Restart when:**
-- Conversation has gone off the rails
-- Accumulated irrelevant context
-- Quality is noticeably degraded
-- Switching to a different task
+### What it looks like in practice
 
-**Continue when:**
-- Building on previous work coherently
-- Context is still relevant and focused
-- Quality remains good
+You'll know context rot when you see it:
 
----
+| Scenario | What rots | What you'll see |
+|----------|-----------|-----------------|
+| Multi-file refactor | Earlier file changes fade | You renamed `UserService` to `AccountService` in file 1. By file 5, the agent calls it `CustomerService`. |
+| Long debug session | Original error description | You said the bug is in the cache layer. 40 messages later, it's debugging the database. |
+| Spec changes mid-task | Old and new requirements coexist | PM changed the requirements. Agent still builds the old spec while partially acknowledging the new one. |
+| Research then implement | Research findings | It found three useful Stack Overflow answers. Forgot all of them when writing code. |
+| Multi-day task | Yesterday's decisions | Made an architectural choice Tuesday. Wednesday it makes the opposite choice. |
 
-## Context Rot
+### Signs you're experiencing it
 
-Context rot is the non-uniform performance degradation that occurs as input context expands. Unlike a gradual decline, models exhibit **sharp, unpredictable drops** at certain thresholds — a model might maintain 95% accuracy, then suddenly plummet to 60%.
+- Agent asks questions you already answered
+- It suggests approaches you explicitly rejected
+- Hallucinations creep into otherwise solid responses
+- It contradicts its own earlier work
+- Responses become vague or generic
 
-Research across [18 leading LLMs](https://research.trychroma.com/context-rot) (GPT-4.1, Claude 4, Gemini 2.5, Qwen 3) confirms all models are affected.
+### Types of rot
 
-### How It Manifests
+| Type | What happens | Example |
+|------|--------------|---------|
+| Temporal | Time-sensitive info goes stale | Outdated API docs, changed requirements |
+| Structural | Relationships between things shift | Refactored code, moved files |
+| Semantic | Meaning changes even if words don't | Renamed concepts, evolved terminology |
 
-- **Lost in the Middle** — models excel at beginning/end positions, neglect middle. Accuracy drops 15-20 points purely from information position
-- **Attention Degradation** — adding more tokens to "improve" context actually worsens performance. Chain-of-thought can even degrade in long-context tasks
-- **Cascading Effect** — stale context compounds through each stage of the development pipeline:
+### How rot compounds
+
+Bad context doesn't just hurt one step. It cascades through your entire workflow:
 
 ```mermaid
 ---
@@ -137,148 +78,182 @@ Noisy Context,Spec,20
 Spec,Good Plan,80
 Spec,Bad Plan,120
 
-Good Plan,Good Tasks,60
-Good Plan,Bad Tasks,40
-Bad Plan,Bad Tasks,100
-Compounding Errors,Bad Tasks,60
+Good Plan,Good Tasks,80
+Bad Plan,Bad Tasks,150
 
-Good Tasks,Good Code,75
-Good Tasks,Bad Code,15
-Bad Tasks,Bad Code,200
-Technical Debt,Bad Code,80
+Good Tasks,Good Code, 75
+Bad Tasks,Bad Code,225
 ```
 
-### Types of Context Rot
+A slightly stale spec produces a mediocre plan. A mediocre plan produces scattered tasks. Scattered tasks produce buggy code. Each stage amplifies the previous problem.
 
-| Type | Description | Example |
-|------|-------------|---------|
-| **Temporal** | Time-sensitive info becomes stale | Outdated API docs, changed requirements |
-| **Structural** | Relationships between entities shift | Refactored code, moved files |
-| **Semantic** | Meaning changes even if data doesn't | Renamed concepts, evolved terminology |
+---
 
-### Prevention
+## Managing your context window
 
-:::tip
-- **Prune aggressively** — remove resolved errors, completed phases, irrelevant history
-- **Summarize, don't accumulate** — compress long conversations into concise summaries
-- **Position critical info at boundaries** — place key information at the beginning or end of context
-- **Use filesystem as memory** — offload to files instead of stuffing the context window (see [Principle 1](#1-filesystem-as-external-memory))
-- **Re-read plans regularly** — counteract attention fade (see [Principle 2](#2-attention-manipulation-through-repetition))
-- **Fresh conversation reset** — when degradation sets in, start clean with only essential context
+Quality degrades before you hit limits. You won't get a warning.
+
+:::warning
+Watch for these signs of degradation:
+- Responses become less coherent
+- Model forgets earlier context
+- Hallucinations increase
+- Agent seems to "drift" from the goal
 :::
 
----
+### The fresh start technique
 
-## Practical Patterns
+When context gets bloated:
 
-### Planning File Template
+1. Copy everything important (current state, key decisions, blockers)
+2. Start a fresh conversation
+3. Paste back only what matters
 
-```markdown
-# Plan: [Brief Description]
+This sounds wasteful. It's not. A fresh context with condensed critical information beats a degraded context every time.
 
-## Goal
-[One sentence describing the end state]
+### When to restart vs continue
 
-## Phases
-- [ ] Phase 1: [Description]
-- [ ] Phase 2: [Description]
-- [ ] Phase 3: [Description]
+Restart when:
+- Conversation has gone off the rails
+- You've accumulated context that's no longer relevant
+- Quality is noticeably degraded
+- Switching to a different task
 
-## Status
-**Current:** [What's happening now]
-
-## Decisions
-- [Decision]: [Rationale]
-
-## Errors Encountered
-- [Error]: [Resolution]
-```
-
-### Error Logging Format
-
-```markdown
-## Errors Encountered
-- [Error message or type]
-  → [What was tried]
-  → [Resolution or workaround]
-```
-
-### Decision Documentation
-
-```markdown
-## [Decision Title]
-**Status:** Decided | Pending
-
-**Options:**
-1. [Option A] - [Pros/Cons]
-2. [Option B] - [Pros/Cons]
-
-**Choice:** [Selected option]
-**Rationale:** [Why this was chosen]
-```
+Continue when:
+- Building coherently on previous work
+- Context is still focused and relevant
+- No signs of degradation
 
 ---
 
-## Planning with Files Workflow
+## Five principles to combat context rot
 
-For complex tasks, use the [Planning with Files](/customizations/skills/planning-with-files) skill to persist context across sessions.
+These aren't abstract ideas. Each one directly fights a specific type of rot.
 
-### Directory Convention
+### 1. Use files as your agent's notebook
+
+Context windows have limits. The filesystem doesn't.
+
+Store large content in files, not chat. Keep references in context, not full contents. Let the agent look things up when needed.
 
 ```
 _plans/
-  2026-01-08-dark-mode-toggle/
-    plan.md
-    decisions.md
-  2026-01-09-api-auth-refactor/
-    plan.md
-    research.md
+  plan.md          # Current goals and status
+  research.md      # Findings and sources
+  decisions.md     # Choices and why you made them
 ```
 
-**Naming:** `YYYY-MM-DD-task-name` (kebab-case)
+This fights context bloat. Instead of cramming everything into the conversation, externalize it.
 
-### File Types
+### 2. Re-read your plan so the agent remembers
 
-| Type | When to Create | Content |
-|------|----------------|---------|
-| `plan.md` | Always | Goal, phases, status, errors |
-| `research.md` | Research-heavy tasks | Sources, findings |
-| `decisions.md` | Tradeoff decisions | Options, rationale |
-| `scratch.md` | Complex reasoning | Drafts, working notes |
+After many interactions, original goals fade. The "lost in the middle" effect buries them.
 
-### File Type Selection
+Keep a plan file. Have it re-read before major decisions:
 
-| Task Type | Files |
-|-----------|-------|
-| Simple bug fix | `plan.md` |
-| Feature with tradeoffs | `plan.md` + `decisions.md` |
-| Research/investigation | `plan.md` + `research.md` |
-| Complex refactor | All types |
+```
+Start of context: [Original goal - attention has faded]
+...many interactions...
+End of context: [Recently read plan.md - fresh attention!]
+```
 
-### Critical Rules
+Reading the plan moves goals back into the attention window. Simple but effective.
+
+### 3. Keep your failures visible
+
+Error recovery shows whether an agent is actually reasoning or just pattern-matching.
+
+Log failed attempts where the agent can see them:
+
+```markdown
+## Errors encountered
+- FileNotFoundError: config.json not found → Created default config
+- API timeout → Retried with exponential backoff, succeeded
+```
+
+The model updates its understanding when it sees what didn't work. This prevents the "try the same failing approach three times" loop.
+
+### 4. Vary your patterns
+
+Uniformity breeds fragility. When you copy-paste the same patterns repeatedly, the model starts overfitting to them. Drift and hallucination follow.
+
+Break the monotony:
+- Vary phrasings slightly
+- Don't duplicate patterns blindly
+- Recalibrate the agent on repetitive tasks
+
+### 5. Structure for cache efficiency
+
+AI assistants process way more input than they generate (roughly 100:1 ratio). Structure your context to help:
+
+- Put static content first (instructions, unchanging context)
+- Append-only conversation history (don't edit earlier messages)
+- Consistent formatting (helps caching)
+
+---
+
+## Context engineering in GitHub Copilot
+
+Copilot has specific mechanisms for managing context. Here's how they map to the principles above.
+
+### Context layers
+
+| Layer | Location | When loaded | Who decides |
+|-------|----------|-------------|-------------|
+| Project instructions | `.github/copilot-instructions.md` | Always | System |
+| Agent memory | `AGENTS.md` | Always | System |
+| Scoped instructions | `.github/instructions/*.instructions.md` | When matching files open | System (by pattern) |
+| Prompts | `.github/prompts/*.prompt.md` | On demand via `/name` | You |
+| Agents | `.github/agents/*.agent.md` | On demand via `@name` | You/System |
+| Skills | `.github/skills/<name>/SKILL.md` | When AI thinks it's relevant | AI |
+
+More context interfaces means more space consumed. Be strategic about what you configure.
+
+See [customizations](/category/customizations/) for detailed setup of each layer.
+
+---
+
+## Planning with files workflow
+
+For complex tasks, use the [Planning with Files](/customizations/skills/planning-with-files) skill to persist context across sessions.
+
+### Rules that actually matter
 
 :::info
-1. **Store, Don't Stuff** — Large outputs go to files, not context
-2. **Log All Errors** — Every error in plan.md "Errors Encountered"
-3. **Decisions Need Rationale** — Record WHY, not just what
-4. **Update Status Immediately** — Mark phases complete as done
-5. **Refresh Goals** — Re-read plan.md after ~20+ interactions
+1. Store, don't stuff. Large outputs go to files, not context.
+2. Log every error. Failed attempts in `plan.md` prevent loops.
+3. Record why, not just what. Decisions without rationale are useless later.
+4. Update status immediately. Mark complete as you go.
+5. Re-read after ~20 interactions. Refresh goals before the agent forgets them.
 :::
 
 ---
 
-## Key Statistics
+## Caveats
 
-| Metric | Insight |
-|--------|---------|
-| Average interactions per complex task | ~50 |
-| Input-to-output ratio | 100:1 |
-| Quality degradation threshold | 20-40% of context used |
+### This isn't really engineering
+
+"Context engineering" sounds precise. It's not.
+
+Once the agent gets your instructions, execution depends on how well the model interprets them. You can increase the probability of good results. You cannot guarantee them.
+
+Don't fall for phrases like "ensure it does X" or "prevent hallucinations." LLMs are probabilistic. Choose the right level of oversight for the task.
+
+### Sharing context configurations
+
+People love sharing their setups. Careful with that.
+
+Problems with borrowed configs:
+- The sharer's codebase is different from yours
+- There's a tendency to overengineer upfront (build gradually instead)
+- Different experience levels need different guidance
+- If you don't know what's in your context, you'll blame the agent for following your own instructions
+
+Build your context configuration iteratively. Start minimal. Add rules when you actually hit problems.
 
 ---
 
-## Summary
+## Sources
 
-> "If the model improvement is the rising tide, we want our workflow to be the boat, not the piling stuck on the seafloor."
-
-The best AI workflows adapt to leverage model improvements while maintaining solid engineering practices around context management.
+- Böckeler, Birgitta. "[Context Engineering for Coding Agents](https://martinfowler.com/articles/exploring-gen-ai/context-engineering-coding-agents.html)." Martin Fowler, February 2026.
+- Chroma Research. "[Context Rot in LLMs](https://research.trychroma.com/context-rot)." 2025.
