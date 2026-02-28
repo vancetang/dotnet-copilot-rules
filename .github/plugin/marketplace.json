@@ -1,0 +1,41 @@
+{
+  "name": "github-copilot-rules",
+  "metadata": {
+    "description": "GitHub Copilot Handbook — agents, skills, and coding standards for .NET",
+    "version": "1.0.0"
+  },
+  "owner": {
+    "name": "Oleksii Nikiforov"
+  },
+  "plugins": [
+    {
+      "name": "handbook-agents",
+      "source": ".github",
+      "description": "Specialized agents for code review, debugging, diff analysis, research, and spec writing",
+      "version": "1.0.0",
+      "agents": [
+        "./agents"
+      ]
+    },
+    {
+      "name": "handbook-dotnet",
+      "source": ".github",
+      "description": ".NET development skills — dependency management, run files, and test workflows",
+      "version": "1.0.0",
+      "skills": [
+        "./skills/dotnet-dependency",
+        "./skills/dotnet-run-file",
+        "./skills/dotnet-test"
+      ]
+    },
+    {
+      "name": "handbook-planning-with-files",
+      "source": ".github",
+      "description": "Persistent markdown-based planning and task tracking for complex multi-session work",
+      "version": "1.0.0",
+      "skills": [
+        "./skills/planning-with-files"
+      ]
+    }
+  ]
+}
